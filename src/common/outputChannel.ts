@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { QueryResults } from './database';
+import { QueryResult } from './database';
 import { Global } from './global';
 
 export class OutputChannel {
@@ -14,7 +14,7 @@ export class OutputChannel {
     OutputChannel.outputChannel.appendLine(value);
   }
 
-  public static displayResults(uri: vscode.Uri, title: string, res: QueryResults[]): void {
+  public static displayResults(uri: vscode.Uri, title: string, res: QueryResult[]): void {
     let viewColumn = OutputChannel.getViewColumn();
     Global.ResultManager.showResults(uri, viewColumn, res);
   }

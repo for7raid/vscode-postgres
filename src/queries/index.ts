@@ -1,8 +1,12 @@
 'use strict';
 
 export class SqlQueries {
+  GetSchemas: string;
+  GetTables: string;
+  GetViews: string;
   TableColumns: string;
   GetFunctions: string;
+  GetFunctionSoruce: string;
 
   public format(stringValue: string, ...formatParams: any[]): string {
     return stringValue.replace(/{(\d+)}/g, (match: string, number: string): string => {
@@ -18,26 +22,55 @@ export class SqlQueries {
 
 let queries = {
   0: <SqlQueries> {
+    GetSchemas: `
+    SELECT nspname as name
+    FROM pg_namespace
+    WHERE
+      nspname not in ('information_schema', 'pg_catalog', 'pg_toast')
+      AND nspname not like 'pg_temp_%'
+      AND nspname not like 'pg_toast_temp_%'
+      AND has_schema_privilege(oid, 'CREATE, USAGE')
+    ORDER BY nspname;`,
+    GetTables: ` SELECT
+    tablename as name,
+    true as is_table,
+    schemaname AS schema
+  FROM pg_tables
+  WHERE 
+    schemaname = $1
+    AND has_table_privilege(quote_ident(schemaname) || '.' || quote_ident(tablename), 'SELECT, INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER') = true ORDER BY name;`,
+    GetViews: ` SELECT
+    viewname as name,
+    false as is_table,
+    schemaname AS schema
+  FROM pg_views
+  WHERE 
+    schemaname = $1
+    AND has_table_privilege(quote_ident(schemaname) || '.' || quote_ident(viewname), 'SELECT, INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER') = true
+ORDER BY name;`,
     GetFunctions:
       `SELECT n.nspname as "schema",
-        p.proname as "name",
-        d.description,
-        pg_catalog.pg_get_function_result(p.oid) as "result_type",
-        pg_catalog.pg_get_function_arguments(p.oid) as "argument_types",
-      CASE
-        WHEN p.proisagg THEN 'agg'
-        WHEN p.proiswindow THEN 'window'
-        WHEN p.prorettype = 'pg_catalog.trigger'::pg_catalog.regtype THEN 'trigger'
-        ELSE 'normal'
-      END as "type"
-      FROM pg_catalog.pg_proc p
-          LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
-          LEFT JOIN pg_catalog.pg_description d ON p.oid = d.objoid
-      WHERE n.nspname = $1
-        AND p.prorettype <> 'pg_catalog.trigger'::pg_catalog.regtype
-        AND has_schema_privilege(quote_ident(n.nspname), 'USAGE') = true
-        AND has_function_privilege(p.oid, 'execute') = true
-      ORDER BY 1, 2, 4;`,
+      p.proname as "name",
+      d.description,
+      pg_catalog.pg_get_function_result(p.oid) as "result_type",
+      pg_catalog.pg_get_function_arguments(p.oid) as "argument_types",
+      l.lanname,
+    CASE
+      WHEN p.proisagg THEN 'agg'
+      WHEN p.proiswindow THEN 'window'
+      WHEN p.prorettype = 'pg_catalog.trigger'::pg_catalog.regtype THEN 'trigger'
+      ELSE 'normal'
+    END as "type"
+    FROM pg_catalog.pg_proc p
+        LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
+        LEFT JOIN pg_catalog.pg_description d ON p.oid = d.objoid
+        left join pg_language l on l.oid = p.prolang
+    WHERE n.nspname =  $1
+      AND p.prorettype <> 'pg_catalog.trigger'::pg_catalog.regtype
+      AND has_schema_privilege(quote_ident(n.nspname), 'USAGE') = true
+      AND has_function_privilege(p.oid, 'execute') = true
+      and l.lanname in ('sql', 'plpgsql')
+    ORDER BY 1, 2, 4;`,
     TableColumns: 
       `SELECT
         a.attname as column_name,
@@ -81,7 +114,13 @@ let queries = {
         a.attnum > 0 AND
         NOT a.attisdropped AND
         has_column_privilege($1, a.attname, 'SELECT, INSERT, UPDATE, REFERENCES')
-      ORDER BY {0};`
+      ORDER BY {0};`,
+      GetFunctionSoruce: `SELECT
+      pg_get_functiondef((
+              SELECT
+                  oid FROM pg_proc
+              WHERE
+                  proname = $1));`
   },
   90400: <SqlQueries> {
     TableColumns:

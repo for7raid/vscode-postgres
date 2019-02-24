@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { QueryResults, FieldInfo } from '../common/database';
+import { QueryResult, FieldInfo } from '../common/database';
 import { Global } from '../common/global';
 
 export function disposeAll(disposables: vscode.Disposable[]) {
@@ -11,7 +11,7 @@ export function disposeAll(disposables: vscode.Disposable[]) {
   }
 }
 
-export function generateResultsHtml(sourceUri: vscode.Uri, results: QueryResults[], state?: any) {
+export function generateResultsHtml(sourceUri: vscode.Uri, results: QueryResult[], state?: any) {
   let pageScript = getExtensionResourcePath('index.js');
   let pageStyle = getExtensionResourcePath('style.css');
   const nonce = new Date().getTime() + '' + new Date().getMilliseconds();
@@ -122,7 +122,7 @@ function getExtensionResourcePath(mediaFile: string): string {
   return url;
 }
 
-function getResultsTables(results: QueryResults[]): string {
+function getResultsTables(results: QueryResult[]): string {
   let html = '', first = true;
   for (const result of results) {
     if (!first)
@@ -144,52 +144,52 @@ function getResultsTables(results: QueryResults[]): string {
   return html;
 }
 
-function generateInsertResults(result: QueryResults): string {
-  let html = getRowCountResult(result.rowCount, 'inserted', 'insert');
+function generateInsertResults(result: QueryResult): string {
+  let html = getRowCountResult(result.rowCount, result.elapsed, 'inserted', 'insert');
   if (result.fields && result.fields.length && result.rows && result.rows.length)
     html += generateSelectTableResult(result);
   return html;
 }
 
-function generateUpdateResults(result: QueryResults): string {
-  let html = getRowCountResult(result.rowCount, 'updated', 'update');
+function generateUpdateResults(result: QueryResult): string {
+  let html = getRowCountResult(result.rowCount, result.elapsed, 'updated', 'update');
   if (result.fields && result.fields.length && result.rows && result.rows.length)
     html += generateSelectTableResult(result);
   return html;
 }
 
-function generateCreateResults(result: QueryResults): string {
-  return getRowCountResult(result.rowCount, 'created', 'create');
+function generateCreateResults(result: QueryResult): string {
+  return getRowCountResult(result.rowCount, result.elapsed, 'created', 'create');
 }
 
-function generateDeleteResults(result: QueryResults): string {
-  return getRowCountResult(result.rowCount, 'deleted', 'delete');
+function generateDeleteResults(result: QueryResult): string {
+  return getRowCountResult(result.rowCount, result.elapsed, 'deleted', 'delete');
 }
 
-function getRowCountResult(rowCount: number, text: string, preClass: string): string {
+function getRowCountResult(rowCount: number, elapsed: number, text: string, preClass: string): string {
   let rowOrRows = rowCount === 1 ? 'row' : 'rows';
-  return `<pre class="vscode-postgres-result vscode-postgres-result-${preClass}">${rowCount} ${rowOrRows} ${text}</pre>`;
+  return `<pre class="vscode-postgres-result vscode-postgres-result-${preClass}">${rowCount} ${rowOrRows} ${text} in ${elapsed} ms</pre>`;
 }
 
-function generateExplainResult(result: QueryResults): string {
+function generateExplainResult(result: QueryResult): string {
   return `<pre class="vscode-postgres-result vscode-postgres-result-explain">${result.rows.join("\n")}</pre>`;
 }
 
-function generateGenericResult(result: QueryResults): string {
+function generateGenericResult(result: QueryResult): string {
   return `<pre class="vscode-postgres-result vscode-postgres-result-generic">${JSON.stringify(result)}</pre>`;
 }
 
-function generateMessage(result: QueryResults): string {
+function generateMessage(result: QueryResult): string {
   return `<pre class="vscode-postgres-result vscode-postgres-result-message">${result.message}</pre>`;
 }
 
-function generateSelectResult(result: QueryResults): string {
-  let html = getRowCountResult(result.rowCount, 'returned', 'select');
+function generateSelectResult(result: QueryResult): string {
+  let html = getRowCountResult(result.rowCount, result.elapsed, 'returned', 'select');
   html += generateSelectTableResult(result);
   return html;
 }
 
-function generateSelectTableResult(result: QueryResults): string {
+function generateSelectTableResult(result: QueryResult): string {
   let html = `<table>`;
   // first the colum headers
   html += `<thead><tr><th></th>`;

@@ -7,6 +7,8 @@ import { TableNode } from "./tableNode";
 import { InfoNode } from "./infoNode";
 import { Global } from '../common/global';
 import { FunctionFolderNode } from './funcFolderNode';
+import { TableFolderNode } from './tableFolderNode';
+import { ViewFolderNode } from './viewFolderNode';
 
 export class SchemaNode implements INode {
 
@@ -34,37 +36,23 @@ export class SchemaNode implements INode {
     const configVirtFolders = Global.Configuration.get<Array<string>>("virtualFolders");
 
     try {
-      const res = await connection.query(`
-      SELECT
-          tablename as name,
-          true as is_table,
-          schemaname AS schema
-        FROM pg_tables
-        WHERE 
-          schemaname = $1
-          AND has_table_privilege(quote_ident(schemaname) || '.' || quote_ident(tablename), 'SELECT, INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER') = true
-      UNION ALL
-      SELECT
-          viewname as name,
-          false as is_table,
-          schemaname AS schema
-        FROM pg_views
-        WHERE 
-          schemaname = $1
-          AND has_table_privilege(quote_ident(schemaname) || '.' || quote_ident(viewname), 'SELECT, INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER') = true
-      ORDER BY name;`, [this.schemaName]);
-
       let childs = [];
       if (configVirtFolders != null)
       {
         if (configVirtFolders.indexOf("functions") !== -1) {
           childs.push(new FunctionFolderNode(this.connection, this.schemaName));
         }
+
+        if (configVirtFolders.indexOf("tables") !== -1) {
+          childs.push(new TableFolderNode(this.connection, this.schemaName));
+        }
+
+        if (configVirtFolders.indexOf("views") !== -1) {
+          childs.push(new ViewFolderNode(this.connection, this.schemaName));
+        }
       }
-      // Append tables under virtual folders
-      return childs.concat(res.rows.map<TableNode>(table => {
-        return new TableNode(this.connection, table.name, table.is_table, table.schema);
-      }));
+
+      return childs;
     } catch(err) {
       return [new InfoNode(err)];
     } finally {

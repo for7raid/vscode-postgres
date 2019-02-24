@@ -27,7 +27,7 @@ export class TableNode implements INode {
     return {
       label: this.table,
       collapsibleState: TreeItemCollapsibleState.Collapsed,
-      contextValue: 'vscode-postgres.tree.table',
+      contextValue: this.is_table ? 'vscode-postgres.tree.table' : 'vscode-postgres.tree.view',
       iconPath: {
         light: path.join(__dirname, `../../resources/light/${this.is_table ? 'table' : 'view'}.svg`),
         dark: path.join(__dirname, `../../resources/dark/${this.is_table ? 'table' : 'view'}.svg`)

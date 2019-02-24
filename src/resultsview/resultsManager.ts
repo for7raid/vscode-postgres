@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { ResultView } from './resultView';
 import { disposeAll } from './common';
-import { QueryResults } from '../common/database';
+import { QueryResult } from '../common/database';
 
 export class ResultsManager implements vscode.WebviewPanelSerializer {
   private static readonly pgsqlResultContextKey = 'vscodePostgresResultFocus';
@@ -24,7 +24,7 @@ export class ResultsManager implements vscode.WebviewPanelSerializer {
     }
   }
 
-  public showResults(resource: vscode.Uri, viewColumn: vscode.ViewColumn, res: QueryResults[]): void {
+  public showResults(resource: vscode.Uri, viewColumn: vscode.ViewColumn, res: QueryResult[]): void {
     let view = this.getExistingView(resource);
     if (view) {
       view.reveal(viewColumn);

@@ -16,13 +16,14 @@ export interface FieldInfo {
   display_type?: string;
 };
 
-export interface QueryResults {
+export interface QueryResult {
   rowCount: number;
   command: string;
   rows?: any[];
   fields?: FieldInfo[];
   flaggedForDeletion?: boolean;
   message?: string;
+  elapsed: number;
 };
 
 export interface TypeResult {
@@ -36,6 +37,7 @@ export interface TypeResults {
   command: string;
   rows?: TypeResult[];
   fields?: FieldInfo[];
+  
 }
 
 export class PgClient extends Client {
@@ -102,13 +104,18 @@ export class Database {
 
     let connection: PgClient = null;
     try {
+      const start = new Date();
       connection = await Database.createConnection(connectionOptions);
       const typeNamesQuery = `select oid, format_type(oid, typtypmod) as display_type, typname from pg_type`;
       const types: TypeResults = await connection.query(typeNamesQuery);
-      const res: QueryResults | QueryResults[] = await connection.query({ text: sql, rowMode: 'array' });
-      const results: QueryResults[] = Array.isArray(res) ? res : [res];
+      const res: QueryResult | QueryResult[] = await connection.query({ text: sql, rowMode: 'array' });
+      const results: QueryResult[] = Array.isArray(res) ? res : [res];
+      const end = new Date();
+      
+      
 
       results.forEach((result) => {
+        result.elapsed = end.valueOf() - start.valueOf();
         result.fields.forEach((field) => {
           let type = types.rows.find((t) => t.oid === field.dataTypeID);
           if (type) {

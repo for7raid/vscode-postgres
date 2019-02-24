@@ -1,12 +1,12 @@
 export interface IConnection {
   label: string;
-  readonly host: string;
-  readonly user: string;
+  host: string;
+  user: string;
   password?: string;
   hasPassword?: boolean;
-  readonly port: number;
-  readonly database?: string;
+  port: number;
+  database?: string;
   multipleStatements?: boolean;
-  readonly certPath?: string;
+  certPath?: string;
   ssl?: any;
 }

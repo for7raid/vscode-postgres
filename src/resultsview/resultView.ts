@@ -1,14 +1,14 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { disposeAll, generateResultsHtml } from './common';
-import { QueryResults } from '../common/database';
+import { QueryResult } from '../common/database';
 import { Global } from '../common/global';
 
 export class ResultView {
   public static viewType = 'vscode-postgres.results';
 
   private _resource: vscode.Uri;
-  private _results: QueryResults[] = [];
+  private _results: QueryResult[] = [];
   private _disposed: boolean = false;
   private firstUpdate: boolean = true;
   private forceUpdate: boolean = false;
@@ -31,7 +31,8 @@ export class ResultView {
     view._results.push({
       command: 'ext-message',
       message: 'Please rerun your queries',
-      rowCount: 0
+      rowCount: 0,
+      elapsed: 0
     });
     await view.doUpdate();
     return view;
@@ -68,7 +69,7 @@ export class ResultView {
     };
   }
 
-  public get currentResults(): QueryResults[] {
+  public get currentResults(): QueryResult[] {
     return this._results;
   }
 
@@ -86,7 +87,7 @@ export class ResultView {
     disposeAll(this.disposables);
   }
 
-  public update(resource: vscode.Uri, res: QueryResults[]) {
+  public update(resource: vscode.Uri, res: QueryResult[]) {
     clearTimeout(this.throttleTimer);
     this.throttleTimer = undefined;
 

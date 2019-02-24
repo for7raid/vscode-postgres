@@ -21,7 +21,9 @@ export default class PostgreSQLLanguageClient {
     let clientOptions: LanguageClientOptions = {
       documentSelector: [
         { language: 'postgres', scheme: 'file' },
-        { language: 'postgres', scheme: 'untitled' }
+        { language: 'postgres', scheme: 'untitled' },
+        { language: 'sql', scheme: 'file' },
+        { language: 'sql', scheme: 'untitled' }
       ]
     };
 

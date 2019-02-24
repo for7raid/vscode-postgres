@@ -6,6 +6,7 @@ import { Database } from '../common/database';
 import { TableNode } from './tableNode';
 import { InfoNode } from './infoNode';
 import { SchemaNode } from './schemaNode';
+import { SqlQueryManager } from '../queries';
 
 export class DatabaseNode implements INode {
 
@@ -30,21 +31,9 @@ export class DatabaseNode implements INode {
 
   public async getChildren(): Promise<INode[]> {
     const connection = await Database.createConnection(this.connection);
-
+    let query = SqlQueryManager.getVersionQueries(connection.pg_version);
     try {
-      const res = await connection.query(`
-      SELECT nspname as name
-      FROM pg_namespace
-      WHERE
-        nspname not in ('information_schema', 'pg_catalog', 'pg_toast')
-        AND nspname not like 'pg_temp_%'
-        AND nspname not like 'pg_toast_temp_%'
-        AND has_schema_privilege(oid, 'CREATE, USAGE')
-      ORDER BY nspname;`);
-
-      // return res.rows.map<TableNode>(table => {
-      //   return new TableNode(this.connection, table.name, table.is_table, table.schema);
-      // });
+      const res = await connection.query(query.GetSchemas);
       return res.rows.map<SchemaNode>(schema => {
         return new SchemaNode(this.connection, schema.name);
       })

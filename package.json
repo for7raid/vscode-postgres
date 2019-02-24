@@ -97,7 +97,9 @@
         "vscode-postgres.virtualFolders": {
           "type": "array",
           "default": [
-            "functions"
+            "functions",
+            "tables",
+            "views"
           ],
           "description": "Controls virtual folders that are shown under schema. Currently only functions are supported."
         }
@@ -166,6 +168,16 @@
         "category": "PostgreSQL"
       },
       {
+        "command": "vscode-postgres.editFunction",
+        "title": "Edit function",
+        "category": "PostgreSQL"
+      },
+      {
+        "command": "vscode-postgres.editView",
+        "title": "Edit view",
+        "category": "PostgreSQL"
+      },
+      {
         "command": "vscode-postgres.saveResult",
         "title": "Save Result",
         "category": "PostgreSQL",
@@ -194,6 +206,9 @@
         {
           "command": "vscode-postgres.runQuery",
           "when": "editorLangId == postgres"
+        },{
+          "command": "vscode-postgres.runQuery",
+          "when": "editorLangId == sql"
         },
         {
           "command": "vscode-postgres.runQuery",
@@ -221,6 +236,11 @@
         {
           "command": "vscode-postgres.runQuery",
           "when": "editorLangId == postgres",
+          "group": "navigation"
+        },
+        {
+          "command": "vscode-postgres.runQuery",
+          "when": "editorLangId == sql",
           "group": "navigation"
         }
       ],
@@ -257,42 +277,43 @@
         },
         {
           "command": "vscode-postgres.refresh",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.table",
-          "group": "postgres@1"
-        },
-        {
-          "command": "vscode-postgres.refresh",
           "when": "view == postgres && viewItem == vscode-postgres.tree.function-folder",
           "group": "postgres@1"
         },
         {
-          "command": "vscode-postgres.newQuery",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.connection",
+          "command": "vscode-postgres.refresh",
+          "when": "view == postgres && viewItem == vscode-postgres.tree.table-folder",
           "group": "postgres@1"
         },
+        {
+          "command": "vscode-postgres.refresh",
+          "when": "view == postgres && viewItem == vscode-postgres.tree.view-folder",
+          "group": "postgres@1"
+        },
+
         {
           "command": "vscode-postgres.newQuery",
           "when": "view == postgres && viewItem == vscode-postgres.tree.database",
           "group": "postgres@1"
-        },
-        {
-          "command": "vscode-postgres.newQuery",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.table",
-          "group": "postgres@1"
-        },
-        {
-          "command": "vscode-postgres.newQuery",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.column",
-          "group": "postgres@1"
-        },
-        {
-          "command": "vscode-postgres.selectTop",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.table",
-          "group": "postgres@2"
-        },
+        },        
         {
           "command": "vscode-postgres.selectTop1000",
           "when": "view == postgres && viewItem == vscode-postgres.tree.table",
+          "group": "postgres@1"
+        },
+        {
+          "command": "vscode-postgres.selectTop1000",
+          "when": "view == postgres && viewItem == vscode-postgres.tree.view",
+          "group": "postgres@1"
+        },
+        {
+          "command": "vscode-postgres.editFunction",
+          "when": "view == postgres && viewItem == vscode-postgres.tree.function",
+          "group": "postgres@2"
+        },
+        {
+          "command": "vscode-postgres.editView",
+          "when": "view == postgres && viewItem == vscode-postgres.tree.view",
           "group": "postgres@2"
         }
       ]
@@ -336,7 +357,7 @@
     "typescript": "^2.9.2",
     "vscode": "^1.1.21",
     "webpack": "^4.17.1",
-    "webpack-cli": "^3.1.0"
+    "webpack-cli": "^3.2.3"
   },
   "dependencies": {
     "csv-stringify": "^3.1.1",

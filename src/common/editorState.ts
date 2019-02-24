@@ -4,6 +4,11 @@ import PostgreSQLLanguageClient from '../language/client';
 import { Global } from './global';
 import { Constants } from './constants';
 import { Database } from './database';
+import * as path from 'path';
+import * as fs from 'fs';
+import * as querystring from 'querystring';
+import { Connection } from 'pg';
+import { PostgreSQLTreeDataProvider } from '../tree/treeProvider';
 
 export class EditorState {
 
@@ -56,47 +61,35 @@ export class EditorState {
   }
 
   public static async getDefaultConnection(): Promise<IConnection> {
-    let defaultConnection = Global.Configuration.get<string>("defaultConnection");
-    if (!defaultConnection) return null;
+    const defaultConnection = Constants.ProejctConnectionLabel;
+    const tree = PostgreSQLTreeDataProvider.getInstance();
+    
+    var root = vscode.workspace.rootPath;
+    var configFile = path.join(root, 'wwwroot', 'appsettings.Development.json');
+    var text = fs.readFileSync(configFile, 'utf8');
+    var connectionStrings = JSON.parse(text).ConnectionStrings;
+    var def = connectionStrings.Default;
+    var conStr = connectionStrings.Values[def];
+    var conObj = querystring.parse(conStr, ';');
 
     let connections = Global.context.globalState.get<{ [key: string]: IConnection }>(Constants.GlobalStateKey);
     if (!connections) connections = {};
 
     let connection: IConnection = null;
-    for (const k in connections) {
-      if (connections.hasOwnProperty(k)) {
-        let connFound = (k === defaultConnection);
-        if (!connFound) {
-          let connName = connections[k].label || connections[k].host;
-          connFound = (connName === defaultConnection);
-        }
+    const label = defaultConnection;
+    const host = conObj.Server;
+    const user = conObj['User Id'];
+    const nPort = conObj.Port;
+    const certPath = '';
+    const database = conObj.Database;
+    connection = { label, host, user, port: nPort, certPath, database };
+    connection.password = conObj.Password;
+    connections[defaultConnection] = connection;
+    await Global.keytar.setPassword(Constants.ExtensionId, defaultConnection, conObj.Password);
+    
+    await tree.context.globalState.update(Constants.GlobalStateKey, connections);
+    tree.refresh();
 
-        if (connFound) {
-          connection = Object.assign({}, connections[k]);
-          if (connection.hasPassword || !connection.hasOwnProperty('hasPassword')) {
-            connection.password = await Global.keytar.getPassword(Constants.ExtensionId, k);
-          }
-          break;
-        }
-      }
-    }
-
-    let defaultDatabase = Global.Configuration.get<string>("defaultDatabase");
-    if (defaultDatabase) {
-      const conn = await Database.createConnection(connection, 'postgres');
-
-      let databases: string[] = [];
-      try {
-        const res = await conn.query('SELECT datname FROM pg_database WHERE datistemplate = false;');
-        databases = res.rows.map<string>(database => database.datname);
-      } finally {
-        await conn.end();
-      }
-
-      if (databases.indexOf(defaultDatabase)) {
-        connection = Database.getConnectionWithDB(connection, defaultDatabase);
-      }
-    }
     return connection;
   }
 

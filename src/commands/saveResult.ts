@@ -4,7 +4,7 @@ import * as EasyXml from 'easyxml';
 import * as csv from 'csv-stringify';
 import { SaveTableQuickPickItem } from "../common/IConnQuickPick";
 import { Global } from "../common/global";
-import { QueryResults } from "../common/database";
+import { QueryResult } from "../common/database";
 
 export class saveResultCommand extends BaseCommand {
   async run(uri: vscode.Uri) {
@@ -87,7 +87,7 @@ export class saveResultCommand extends BaseCommand {
   }
 }
 
-function transformResult(result: QueryResults) {
+function transformResult(result: QueryResult) {
   let trxFunc = transformData.bind(null, result.fields);
   return result.rows.map(trxFunc);
 }
