@@ -7,6 +7,8 @@ export class SqlQueries {
   TableColumns: string;
   GetFunctions: string;
   GetFunctionSoruce: string;
+  GetFunctionDepends: string;
+  FindFunction: string;
 
   public format(stringValue: string, ...formatParams: any[]): string {
     return stringValue.replace(/{(\d+)}/g, (match: string, number: string): string => {
@@ -21,7 +23,7 @@ export class SqlQueries {
 }
 
 let queries = {
-  0: <SqlQueries> {
+  0: <SqlQueries>{
     GetSchemas: `
     SELECT nspname as name
     FROM pg_namespace
@@ -51,7 +53,6 @@ ORDER BY name;`,
     GetFunctions:
       `SELECT n.nspname as "schema",
       p.proname as "name",
-      d.description,
       pg_catalog.pg_get_function_result(p.oid) as "result_type",
       pg_catalog.pg_get_function_arguments(p.oid) as "argument_types",
       l.lanname,
@@ -71,7 +72,7 @@ ORDER BY name;`,
       AND has_function_privilege(p.oid, 'execute') = true
       and l.lanname in ('sql', 'plpgsql')
     ORDER BY 1, 2, 4;`,
-    TableColumns: 
+    TableColumns:
       `SELECT
         a.attname as column_name,
         format_type(a.atttypid, a.atttypmod) as data_type,
@@ -115,14 +116,57 @@ ORDER BY name;`,
         NOT a.attisdropped AND
         has_column_privilege($1, a.attname, 'SELECT, INSERT, UPDATE, REFERENCES')
       ORDER BY {0};`,
-      GetFunctionSoruce: `SELECT
+    GetFunctionSoruce: `SELECT
       pg_get_functiondef((
               SELECT
                   oid FROM pg_proc
               WHERE
-                  proname = $1));`
+                  proname = $1));`,
+    GetFunctionDepends: `SELECT n.nspname as "schema",
+                  p.proname as "name",
+                  pg_catalog.pg_get_function_result(p.oid) as "result_type",
+                  pg_catalog.pg_get_function_arguments(p.oid) as "argument_types",
+                  l.lanname,
+                CASE
+                  WHEN p.proisagg THEN 'agg'
+                  WHEN p.proiswindow THEN 'window'
+                  WHEN p.prorettype = 'pg_catalog.trigger'::pg_catalog.regtype THEN 'trigger'
+                  ELSE 'normal'
+                END as "type"
+                FROM pg_catalog.pg_proc p
+                    LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
+                    LEFT JOIN pg_catalog.pg_description d ON p.oid = d.objoid
+                    left join pg_language l on l.oid = p.prolang
+                WHERE p.prosrc ilike $1 and lower(p.proname) <> lower($1)
+                  AND p.prorettype <> 'pg_catalog.trigger'::pg_catalog.regtype
+                  AND has_schema_privilege(quote_ident(n.nspname), 'USAGE') = true
+                  AND has_function_privilege(p.oid, 'execute') = true
+                  and l.lanname in ('sql', 'plpgsql')
+                 
+                ORDER BY 1, 2, 4;`,
+    FindFunction:  `SELECT n.nspname as "schema",
+    p.proname as "name",
+    pg_catalog.pg_get_function_result(p.oid) as "result_type",
+    pg_catalog.pg_get_function_arguments(p.oid) as "argument_types",
+    l.lanname,
+  CASE
+    WHEN p.proisagg THEN 'agg'
+    WHEN p.proiswindow THEN 'window'
+    WHEN p.prorettype = 'pg_catalog.trigger'::pg_catalog.regtype THEN 'trigger'
+    ELSE 'normal'
+  END as "type"
+  FROM pg_catalog.pg_proc p
+      LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
+      LEFT JOIN pg_catalog.pg_description d ON p.oid = d.objoid
+      left join pg_language l on l.oid = p.prolang
+  WHERE p.proname ilike  $1
+    AND p.prorettype <> 'pg_catalog.trigger'::pg_catalog.regtype
+    AND has_schema_privilege(quote_ident(n.nspname), 'USAGE') = true
+    AND has_function_privilege(p.oid, 'execute') = true
+    and l.lanname in ('sql', 'plpgsql')
+  ORDER BY 1, 2, 4;`,
   },
-  90400: <SqlQueries> {
+  90400: <SqlQueries>{
     TableColumns:
       `SELECT
         a.attname as column_name,
@@ -173,7 +217,7 @@ ORDER BY name;`,
         has_column_privilege($1, a.attname, 'SELECT, INSERT, UPDATE, REFERENCES')
       ORDER BY {0};`
   },
-  110000: <SqlQueries> {
+  110000: <SqlQueries>{
     GetFunctions: `
       SELECT n.nspname as "schema",
         p.proname as "name",
@@ -207,7 +251,7 @@ export class SqlQueryManager {
     for (let version of versionKeys) {
       if (version > versionNumber)
         break;
-      
+
       let queryKeys = Object.keys(queries[version]);
       for (let queryKey of queryKeys) {
         if (queries[version][queryKey]) {

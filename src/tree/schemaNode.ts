@@ -12,8 +12,8 @@ import { ViewFolderNode } from './viewFolderNode';
 
 export class SchemaNode implements INode {
 
-  constructor(private readonly connection: IConnection, private readonly schemaName: string) {}
-  
+  constructor(private readonly connection: IConnection, private readonly schemaName: string) { }
+
   public getTreeItem(): TreeItem {
     return {
       label: this.schemaName,
@@ -22,7 +22,7 @@ export class SchemaNode implements INode {
       command: {
         title: 'select-database',
         command: 'vscode-postgres.setActiveConnection',
-        arguments: [ this.connection ]
+        arguments: [this.connection]
       },
       iconPath: {
         light: path.join(__dirname, '../../resources/light/schema.svg'),
@@ -33,27 +33,18 @@ export class SchemaNode implements INode {
 
   public async getChildren(): Promise<INode[]> {
     const connection = await Database.createConnection(this.connection);
-    const configVirtFolders = Global.Configuration.get<Array<string>>("virtualFolders");
+
 
     try {
       let childs = [];
-      if (configVirtFolders != null)
-      {
-        if (configVirtFolders.indexOf("functions") !== -1) {
-          childs.push(new FunctionFolderNode(this.connection, this.schemaName));
-        }
 
-        if (configVirtFolders.indexOf("tables") !== -1) {
-          childs.push(new TableFolderNode(this.connection, this.schemaName));
-        }
+      childs.push(new FunctionFolderNode(this.connection, this.schemaName));
+      childs.push(new TableFolderNode(this.connection, this.schemaName));
+      childs.push(new ViewFolderNode(this.connection, this.schemaName));
 
-        if (configVirtFolders.indexOf("views") !== -1) {
-          childs.push(new ViewFolderNode(this.connection, this.schemaName));
-        }
-      }
 
       return childs;
-    } catch(err) {
+    } catch (err) {
       return [new InfoNode(err)];
     } finally {
       await connection.end();

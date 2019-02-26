@@ -1,13 +1,13 @@
 {
-  "name": "vscode-postgres",
-  "displayName": "PostgreSQL",
-  "description": "PostgreSQL Management Tool",
-  "version": "1.1.6",
-  "publisher": "ckolkman",
+  "name": "vscode-pmforesight",
+  "displayName": "Foresight dev tool",
+  "description": "Foresight dev tool",
+  "version": "0.0.1",
+  "publisher": "akarov",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Borvik/vscode-postgres.git"
+    "url": "https://github.com/for7raid/vscode-postgres.git"
   },
   "engines": {
     "vscode": "^1.25.0"
@@ -25,7 +25,8 @@
         "id": "postgres",
         "extensions": [
           ".pgsql",
-          ".psql"
+          ".psql",
+          ".sql"
         ],
         "aliases": [
           "Postgres"
@@ -44,16 +45,7 @@
       "type": "object",
       "title": "PostgreSQL",
       "properties": {
-        "vscode-postgres.defaultConnection": {
-          "type": "string",
-          "default": "",
-          "description": "The default connection to use"
-        },
-        "vscode-postgres.defaultDatabase": {
-          "type": "string",
-          "default": "",
-          "description": "The default database on the default connection to use"
-        },
+  
         "vscode-postgres.showExplorer": {
           "type": "boolean",
           "default": true,

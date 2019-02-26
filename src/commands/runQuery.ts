@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import { IConnection } from "../common/IConnection";
 import { EditorState } from "../common/editorState";
 import { Database } from "../common/database";
+import * as  fs  from "fs";
 
 'use strict';
 
@@ -46,6 +47,10 @@ export class runQueryCommand extends BaseCommand {
     if (editor.document.getText(selectionToTrim).trim().length === 0) {
       vscode.window.showWarningMessage('No SQL found to run');
       return;
+    }
+    var root = vscode.workspace.rootPath;
+    if (editor.document.fileName.startsWith(root)) {
+      editor.document.save();
     }
 
     let sql = editor.document.getText(selectionToTrim);

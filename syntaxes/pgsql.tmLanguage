@@ -6,6 +6,7 @@
 	<array>
 		<string>pgsql</string>
 		<string>psql</string>
+		<string>sql</string>
 	</array>
 	<key>foldingStartMarker</key>
 	<string>\s*\(\s*$</string>

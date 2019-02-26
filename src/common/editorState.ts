@@ -63,9 +63,13 @@ export class EditorState {
   public static async getDefaultConnection(): Promise<IConnection> {
     const defaultConnection = Constants.ProejctConnectionLabel;
     const tree = PostgreSQLTreeDataProvider.getInstance();
-    
+
     var root = vscode.workspace.rootPath;
     var configFile = path.join(root, 'wwwroot', 'appsettings.Development.json');
+    
+    if (!fs.existsSync(configFile))
+      return null;
+
     var text = fs.readFileSync(configFile, 'utf8');
     var connectionStrings = JSON.parse(text).ConnectionStrings;
     var def = connectionStrings.Default;
@@ -75,7 +79,11 @@ export class EditorState {
     let connections = Global.context.globalState.get<{ [key: string]: IConnection }>(Constants.GlobalStateKey);
     if (!connections) connections = {};
 
-    let connection: IConnection = null;
+    let connection: IConnection = connections[defaultConnection];
+    if (connection && connection.host == conObj.Server && connection.database == conObj.Database) {
+      return connection;
+    }
+
     const label = defaultConnection;
     const host = conObj.Server;
     const user = conObj['User Id'];
@@ -86,7 +94,7 @@ export class EditorState {
     connection.password = conObj.Password;
     connections[defaultConnection] = connection;
     await Global.keytar.setPassword(Constants.ExtensionId, defaultConnection, conObj.Password);
-    
+
     await tree.context.globalState.update(Constants.GlobalStateKey, connections);
     tree.refresh();
 
@@ -110,8 +118,8 @@ export class EditorState {
       this.statusBarServer = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
       this.statusBarServer.tooltip = 'Change Active Server';
     }
-    
-    this.statusBarServer.text = `$(server) ${conn.label || conn.host}`;
+
+    this.statusBarServer.text = `$(server) ${conn.label} ${conn.host}`;
     this.statusBarServer.command = 'vscode-postgres.selectConnection';
     this.statusBarServer.show();
 
@@ -144,7 +152,7 @@ export class EditorState {
       this.statusBarServer = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
       this.statusBarServer.tooltip = 'Change Active Server';
     }
-    
+
     this.statusBarServer.text = `$(server) Select Postgres Server`;
     this.statusBarServer.command = 'vscode-postgres.selectConnection';
     this.statusBarServer.show();
