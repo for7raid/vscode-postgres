@@ -12,6 +12,7 @@ import { ConfigFS } from './common/configFileSystem';
 import { ResultsManager } from './resultsview/resultsManager';
 import { SqlSymbolProvider } from './common/SqlSymbolProvider';
 import { DatabaseFS } from './common/databaseFileSystem';
+import PsqlDocumentFormattingEditProvider from './formatter/PsqlDocumentFormattingEditProvider';
 
 
 // this method is called when your extension is activated
@@ -51,6 +52,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(vscode.workspace.registerFileSystemProvider('postgres-config', new ConfigFS(), {isCaseSensitive: true}));
   context.subscriptions.push(vscode.workspace.registerFileSystemProvider('postgres-database', new DatabaseFS(), {isCaseSensitive: false}));
+  context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider([{ language: 'sql' },{ language: 'postgres' }], new PsqlDocumentFormattingEditProvider()));
   context.subscriptions.push(vscode.languages.registerWorkspaceSymbolProvider(new SqlSymbolProvider()));
 
 }
