@@ -45,7 +45,6 @@
       "type": "object",
       "title": "PostgreSQL",
       "properties": {
-  
         "vscode-postgres.showExplorer": {
           "type": "boolean",
           "default": true,
@@ -198,7 +197,8 @@
         {
           "command": "vscode-postgres.runQuery",
           "when": "editorLangId == postgres"
-        },{
+        },
+        {
           "command": "vscode-postgres.runQuery",
           "when": "editorLangId == sql"
         },
@@ -282,12 +282,11 @@
           "when": "view == postgres && viewItem == vscode-postgres.tree.view-folder",
           "group": "postgres@1"
         },
-
         {
           "command": "vscode-postgres.newQuery",
           "when": "view == postgres && viewItem == vscode-postgres.tree.database",
           "group": "postgres@1"
-        },        
+        },
         {
           "command": "vscode-postgres.selectTop1000",
           "when": "view == postgres && viewItem == vscode-postgres.tree.table",
@@ -355,6 +354,7 @@
     "csv-stringify": "^3.1.1",
     "easyxml": "^2.0.1",
     "pg": "^7.4.3",
+    "sql-formatter": "^2.3.2",
     "uuid": "^3.3.2",
     "vscode-languageclient": "^4.4.2",
     "vscode-languageserver": "^4.4.2"
