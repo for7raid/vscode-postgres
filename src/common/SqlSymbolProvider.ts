@@ -5,9 +5,6 @@ import { EditorState } from './editorState';
 import { Database } from './database';
 import { SqlQueryManager } from '../queries';
 
-import { FunctionNode } from '../tree/functionNode';
-
-
 export class SqlSymbolProvider implements vscode.WorkspaceSymbolProvider {
     provideWorkspaceSymbols(find: string, token: vscode.CancellationToken): vscode.ProviderResult<vscode.SymbolInformation[]> {
         if (!find || find.length < 3) return null;
@@ -35,14 +32,7 @@ export class SqlSymbolProvider implements vscode.WorkspaceSymbolProvider {
         });
     }
     resolveWorkspaceSymbol?(symbol: vscode.SymbolInformation, token: vscode.CancellationToken): vscode.ProviderResult<vscode.SymbolInformation> {
-        return new Promise(async (resolve, reject) => {
-            let projectConnection = await EditorState.getDefaultConnection();
-            let uri = symbol.location.uri;
-            let func = new FunctionNode(projectConnection, uri.authority, null, null, uri.scheme)
-            vscode.commands.executeCommand("vscode-postgres.editFunction", func);
-            resolve();
-            //new editFunctionCommand().run(func)
-        });
+       throw new Error();
     }
 }
 
