@@ -46,12 +46,12 @@ export class selectConnectionCommand extends BaseCommand {
         connection.password = await Global.keytar.getPassword(Constants.ExtensionId, hostToSelect.connection_key);
       }
       EditorState.connection = connection;
-      await vscode.commands.executeCommand('vscode-postgres.selectDatabase');
+      await vscode.commands.executeCommand('vscode-foresight-devtool.selectDatabase');
       return;
     }
 
-    let result = await vscode.commands.executeCommand('vscode-postgres.addConnection');
+    let result = await vscode.commands.executeCommand('vscode-foresight-devtool.addConnection');
     if (!result) return;
-    await vscode.commands.executeCommand('vscode-postgres.selectDatabase');
+    await vscode.commands.executeCommand('vscode-foresight-devtool.selectDatabase');
   }
 }

@@ -16,10 +16,10 @@ export class DatabaseNode implements INode {
     return {
       label: this.connection.database,
       collapsibleState: TreeItemCollapsibleState.Collapsed,
-      contextValue: 'vscode-postgres.tree.database',
+      contextValue: 'vscode-foresight-devtool.tree.database',
       command: {
         title: 'select-database',
-        command: 'vscode-postgres.setActiveConnection',
+        command: 'vscode-foresight-devtool.setActiveConnection',
         arguments: [ this.connection ]
       },
       iconPath: {

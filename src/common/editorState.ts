@@ -120,7 +120,7 @@ export class EditorState {
     }
 
     this.statusBarServer.text = `$(server) ${conn.label} ${conn.host}`;
-    this.statusBarServer.command = 'vscode-postgres.selectConnection';
+    this.statusBarServer.command = 'vscode-foresight-devtool.selectConnection';
     this.statusBarServer.show();
 
     // if (!conn.database) {
@@ -141,7 +141,7 @@ export class EditorState {
     } else {
       this.statusBarDatabase.text = `$(database) ${conn.database}`;
     }
-    this.statusBarDatabase.command = 'vscode-postgres.selectDatabase';
+    this.statusBarDatabase.command = 'vscode-foresight-devtool.selectDatabase';
     this.statusBarDatabase.show();
   }
 
@@ -154,7 +154,7 @@ export class EditorState {
     }
 
     this.statusBarServer.text = `$(server) Select Postgres Server`;
-    this.statusBarServer.command = 'vscode-postgres.selectConnection';
+    this.statusBarServer.command = 'vscode-foresight-devtool.selectConnection';
     this.statusBarServer.show();
   }
 

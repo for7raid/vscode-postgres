@@ -17,7 +17,7 @@ export class TableFolderNode implements INode {
     return {
       label: "Tables",
       collapsibleState: TreeItemCollapsibleState.Collapsed,
-      contextValue: 'vscode-postgres.tree.table-folder',
+      contextValue: 'vscode-foresight-devtool.tree.table-folder',
       iconPath: {
         light: path.join(__dirname, `../../resources/light/func-folder.svg`),
         dark: path.join(__dirname, `../../resources/dark/func-folder.svg`)

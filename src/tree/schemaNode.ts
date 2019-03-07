@@ -18,10 +18,10 @@ export class SchemaNode implements INode {
     return {
       label: this.schemaName,
       collapsibleState: TreeItemCollapsibleState.Collapsed,
-      contextValue: 'vscode-postgres.tree.schema',
+      contextValue: 'vscode-foresight-devtool.tree.schema',
       command: {
         title: 'select-database',
-        command: 'vscode-postgres.setActiveConnection',
+        command: 'vscode-foresight-devtool.setActiveConnection',
         arguments: [this.connection]
       },
       iconPath: {

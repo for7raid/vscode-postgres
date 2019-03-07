@@ -5,7 +5,7 @@ import { QueryResult } from '../common/database';
 import { Global } from '../common/global';
 
 export class ResultView {
-  public static viewType = 'vscode-postgres.results';
+  public static viewType = 'vscode-foresight-devtool.results';
 
   private _resource: vscode.Uri;
   private _results: QueryResult[] = [];

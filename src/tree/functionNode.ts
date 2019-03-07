@@ -21,10 +21,10 @@ export class FunctionNode implements INode {
       label: label,
       tooltip: tooltip,
       collapsibleState: TreeItemCollapsibleState.Collapsed,
-      contextValue: 'vscode-postgres.tree.function',
+      contextValue: 'vscode-foresight-devtool.tree.function',
       command: {
         title: 'edit-function',
-        command: 'vscode-postgres.editFunction',
+        command: 'vscode-foresight-devtool.editFunction',
         arguments: [this]
       },
       iconPath: {

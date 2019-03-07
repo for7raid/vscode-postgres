@@ -21,7 +21,7 @@ export function generateResultsHtml(sourceUri: vscode.Uri, results: QueryResult[
     <head>
       <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
       <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src vscode-resource: https: data:; media-src vscode-resource: https: data:; script-src 'nonce-${nonce}'; style-src vscode-resource: 'unsafe-inline' https: data:; font-src vscode-resource: https: data:;">
-      <meta id="vscode-postgres-results-data"
+      <meta id="vscode-foresight-devtool-results-data"
         data-settings=""
         data-state="${JSON.stringify(state || {}).replace(/"/g, '&quot;')}" />
       <script src="${pageScript}" nonce="${nonce}"></script>
@@ -51,39 +51,39 @@ function getStyles(nonce) {
       padding: 0;
     }
 
-    pre.vscode-postgres-result {
+    pre.vscode-foresight-devtool-result {
       margin: 5px;
     }
     
-    pre.vscode-postgres-result-insert {
+    pre.vscode-foresight-devtool-result-insert {
     
     }
     
-    pre.vscode-postgres-result-update {
+    pre.vscode-foresight-devtool-result-update {
       
     }
     
-    pre.vscode-postgres-result-create {
+    pre.vscode-foresight-devtool-result-create {
       
     }
     
-    pre.vscode-postgres-result-delete {
+    pre.vscode-foresight-devtool-result-delete {
       
     }
     
-    pre.vscode-postgres-result-explain {
+    pre.vscode-foresight-devtool-result-explain {
       
     }
     
-    pre.vscode-postgres-result-generic {
+    pre.vscode-foresight-devtool-result-generic {
       
     }
     
-    pre.vscode-postgres-result-message {
+    pre.vscode-foresight-devtool-result-message {
       
     }
 
-    pre.vscode-postgres-result-select {
+    pre.vscode-foresight-devtool-result-select {
       
     }
 
@@ -168,19 +168,19 @@ function generateDeleteResults(result: QueryResult): string {
 
 function getRowCountResult(rowCount: number, elapsed: number, text: string, preClass: string): string {
   let rowOrRows = rowCount === 1 ? 'row' : 'rows';
-  return `<pre class="vscode-postgres-result vscode-postgres-result-${preClass}">${rowCount} ${rowOrRows} ${text} in ${elapsed} ms</pre>`;
+  return `<pre class="vscode-foresight-devtool-result vscode-foresight-devtool-result-${preClass}">${rowCount} ${rowOrRows} ${text} in ${elapsed} ms</pre>`;
 }
 
 function generateExplainResult(result: QueryResult): string {
-  return `<pre class="vscode-postgres-result vscode-postgres-result-explain">${result.rows.join("\n")}</pre>`;
+  return `<pre class="vscode-foresight-devtool-result vscode-foresight-devtool-result-explain">${result.rows.join("\n")}</pre>`;
 }
 
 function generateGenericResult(result: QueryResult): string {
-  return `<pre class="vscode-postgres-result vscode-postgres-result-generic">${JSON.stringify(result)}</pre>`;
+  return `<pre class="vscode-foresight-devtool-result vscode-foresight-devtool-result-generic">${JSON.stringify(result)}</pre>`;
 }
 
 function generateMessage(result: QueryResult): string {
-  return `<pre class="vscode-postgres-result vscode-postgres-result-message">${result.message}</pre>`;
+  return `<pre class="vscode-foresight-devtool-result vscode-foresight-devtool-result-message">${result.message}</pre>`;
 }
 
 function generateSelectResult(result: QueryResult): string {

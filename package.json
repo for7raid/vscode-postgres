@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/for7raid/vscode-postgres.git"
+    "url": "https://github.com/for7raid/vscode-foresight-devtool.git"
   },
   "engines": {
     "vscode": "^1.25.0"
@@ -45,17 +45,17 @@
       "type": "object",
       "title": "PostgreSQL",
       "properties": {
-        "vscode-postgres.showExplorer": {
+        "vscode-foresight-devtool.showExplorer": {
           "type": "boolean",
           "default": true,
           "description": "Show or hide the database explorer."
         },
-        "vscode-postgres.prettyPrintJSONfields": {
+        "vscode-foresight-devtool.prettyPrintJSONfields": {
           "type": "boolean",
           "default": false,
           "description": "Turns on/off pretty printing of JSON fields"
         },
-        "vscode-postgres.setConnectionFromExplorer": {
+        "vscode-foresight-devtool.setConnectionFromExplorer": {
           "type": "string",
           "enum": [
             "always",
@@ -65,7 +65,7 @@
           "default": "always",
           "description": "Controls whether selecting a database in explorer changes the current editor's connection"
         },
-        "vscode-postgres.tableColumnSortOrder": {
+        "vscode-foresight-devtool.tableColumnSortOrder": {
           "type": "string",
           "enum": [
             "db-order",
@@ -75,7 +75,7 @@
           "default": "db-order",
           "description": "Controls the order of the columns in the database explorer. Default is db-order which orders the columns as the were added to the table (how postgres reports them)"
         },
-        "vscode-postgres.intervalFormat": {
+        "vscode-foresight-devtool.intervalFormat": {
           "type": "string",
           "enum": [
             "iso_8601",
@@ -84,28 +84,19 @@
           ],
           "default": "iso_8601",
           "description": "Controls the display format for `interval` columns. Default is the iso_8601 standard which does not cover milliseconds."
-        },
-        "vscode-postgres.virtualFolders": {
-          "type": "array",
-          "default": [
-            "functions",
-            "tables",
-            "views"
-          ],
-          "description": "Controls virtual folders that are shown under schema. Currently only functions are supported."
         }
       }
     },
     "keybindings": [
       {
-        "command": "vscode-postgres.runQuery",
+        "command": "vscode-foresight-devtool.runQuery",
         "key": "f5",
         "when": "editorLangId == postgres"
       }
     ],
     "commands": [
       {
-        "command": "vscode-postgres.addConnection",
+        "command": "vscode-foresight-devtool.addConnection",
         "title": "Add Connection",
         "icon": {
           "light": "resources/light/add.svg",
@@ -114,62 +105,62 @@
         "category": "PostgreSQL"
       },
       {
-        "command": "vscode-postgres.deleteConnection",
+        "command": "vscode-foresight-devtool.deleteConnection",
         "title": "Delete Connection",
         "category": "PostgreSQL"
       },
       {
-        "command": "vscode-postgres.selectConnection",
+        "command": "vscode-foresight-devtool.selectConnection",
         "title": "Select Connection",
         "category": "PostgreSQL"
       },
       {
-        "command": "vscode-postgres.renameConnection",
+        "command": "vscode-foresight-devtool.renameConnection",
         "title": "Rename Connection",
         "category": "PostgreSQL"
       },
       {
-        "command": "vscode-postgres.editConnection",
+        "command": "vscode-foresight-devtool.editConnection",
         "title": "Edit Connection",
         "category": "PostgreSQL"
       },
       {
-        "command": "vscode-postgres.newQuery",
+        "command": "vscode-foresight-devtool.newQuery",
         "title": "New Query",
         "category": "PostgreSQL"
       },
       {
-        "command": "vscode-postgres.refresh",
+        "command": "vscode-foresight-devtool.refresh",
         "title": "Refresh Items",
         "category": "PostgreSQL"
       },
       {
-        "command": "vscode-postgres.selectTop",
+        "command": "vscode-foresight-devtool.selectTop",
         "title": "Select Top...",
         "category": "PostgreSQL"
       },
       {
-        "command": "vscode-postgres.selectTop1000",
+        "command": "vscode-foresight-devtool.selectTop1000",
         "title": "Select Top 1000",
         "category": "PostgreSQL"
       },
       {
-        "command": "vscode-postgres.runQuery",
+        "command": "vscode-foresight-devtool.runQuery",
         "title": "Run Query",
         "category": "PostgreSQL"
       },
       {
-        "command": "vscode-postgres.editFunction",
+        "command": "vscode-foresight-devtool.editFunction",
         "title": "Edit function",
         "category": "PostgreSQL"
       },
       {
-        "command": "vscode-postgres.editView",
+        "command": "vscode-foresight-devtool.editView",
         "title": "Edit view",
         "category": "PostgreSQL"
       },
       {
-        "command": "vscode-postgres.saveResult",
+        "command": "vscode-foresight-devtool.saveResult",
         "title": "Save Result",
         "category": "PostgreSQL",
         "icon": {
@@ -181,130 +172,130 @@
     "menus": {
       "editor/title": [
         {
-          "command": "vscode-postgres.saveResult",
+          "command": "vscode-foresight-devtool.saveResult",
           "when": "vscodePostgresResultFocus",
           "group": "navigation"
         }
       ],
       "view/title": [
         {
-          "command": "vscode-postgres.addConnection",
+          "command": "vscode-foresight-devtool.addConnection",
           "when": "view == postgres",
           "group": "navigation@1"
         }
       ],
       "commandPalette": [
         {
-          "command": "vscode-postgres.runQuery",
+          "command": "vscode-foresight-devtool.runQuery",
           "when": "editorLangId == postgres"
         },
         {
-          "command": "vscode-postgres.runQuery",
+          "command": "vscode-foresight-devtool.runQuery",
           "when": "editorLangId == sql"
         },
         {
-          "command": "vscode-postgres.runQuery",
+          "command": "vscode-foresight-devtool.runQuery",
           "when": "editorLangId != postgres && editorHasSelection && !editorHasMultipleSelections"
         },
         {
-          "command": "vscode-postgres.selectTop",
-          "when": "config.vscode-postgres.never"
+          "command": "vscode-foresight-devtool.selectTop",
+          "when": "config.vscode-foresight-devtool.never"
         },
         {
-          "command": "vscode-postgres.selectTop1000",
-          "when": "config.vscode-postgres.never"
+          "command": "vscode-foresight-devtool.selectTop1000",
+          "when": "config.vscode-foresight-devtool.never"
         },
         {
-          "command": "vscode-postgres.saveResult",
-          "when": "config.vscode-postgres.never"
+          "command": "vscode-foresight-devtool.saveResult",
+          "when": "config.vscode-foresight-devtool.never"
         }
       ],
       "editor/context": [
         {
-          "command": "vscode-postgres.runQuery",
+          "command": "vscode-foresight-devtool.runQuery",
           "when": "editorLangId != postgres && editorHasSelection && !editorHasMultipleSelections",
           "group": "navigation"
         },
         {
-          "command": "vscode-postgres.runQuery",
+          "command": "vscode-foresight-devtool.runQuery",
           "when": "editorLangId == postgres",
           "group": "navigation"
         },
         {
-          "command": "vscode-postgres.runQuery",
+          "command": "vscode-foresight-devtool.runQuery",
           "when": "editorLangId == sql",
           "group": "navigation"
         }
       ],
       "view/item/context": [
         {
-          "command": "vscode-postgres.editConnection",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.connection",
+          "command": "vscode-foresight-devtool.editConnection",
+          "when": "view == postgres && viewItem == vscode-foresight-devtool.tree.connection",
           "group": "postgres@2"
         },
         {
-          "command": "vscode-postgres.deleteConnection",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.connection",
+          "command": "vscode-foresight-devtool.deleteConnection",
+          "when": "view == postgres && viewItem == vscode-foresight-devtool.tree.connection",
           "group": "postgres@2"
         },
         {
-          "command": "vscode-postgres.renameConnection",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.connection",
+          "command": "vscode-foresight-devtool.renameConnection",
+          "when": "view == postgres && viewItem == vscode-foresight-devtool.tree.connection",
           "group": "postgres@2"
         },
         {
-          "command": "vscode-postgres.refresh",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.connection",
+          "command": "vscode-foresight-devtool.refresh",
+          "when": "view == postgres && viewItem == vscode-foresight-devtool.tree.connection",
           "group": "postgres@1"
         },
         {
-          "command": "vscode-postgres.refresh",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.schema",
+          "command": "vscode-foresight-devtool.refresh",
+          "when": "view == postgres && viewItem == vscode-foresight-devtool.tree.schema",
           "group": "postgres@1"
         },
         {
-          "command": "vscode-postgres.refresh",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.database",
+          "command": "vscode-foresight-devtool.refresh",
+          "when": "view == postgres && viewItem == vscode-foresight-devtool.tree.database",
           "group": "postgres@1"
         },
         {
-          "command": "vscode-postgres.refresh",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.function-folder",
+          "command": "vscode-foresight-devtool.refresh",
+          "when": "view == postgres && viewItem == vscode-foresight-devtool.tree.function-folder",
           "group": "postgres@1"
         },
         {
-          "command": "vscode-postgres.refresh",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.table-folder",
+          "command": "vscode-foresight-devtool.refresh",
+          "when": "view == postgres && viewItem == vscode-foresight-devtool.tree.table-folder",
           "group": "postgres@1"
         },
         {
-          "command": "vscode-postgres.refresh",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.view-folder",
+          "command": "vscode-foresight-devtool.refresh",
+          "when": "view == postgres && viewItem == vscode-foresight-devtool.tree.view-folder",
           "group": "postgres@1"
         },
         {
-          "command": "vscode-postgres.newQuery",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.database",
+          "command": "vscode-foresight-devtool.newQuery",
+          "when": "view == postgres && viewItem == vscode-foresight-devtool.tree.database",
           "group": "postgres@1"
         },
         {
-          "command": "vscode-postgres.selectTop1000",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.table",
+          "command": "vscode-foresight-devtool.selectTop1000",
+          "when": "view == postgres && viewItem == vscode-foresight-devtool.tree.table",
           "group": "postgres@1"
         },
         {
-          "command": "vscode-postgres.selectTop1000",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.view",
+          "command": "vscode-foresight-devtool.selectTop1000",
+          "when": "view == postgres && viewItem == vscode-foresight-devtool.tree.view",
           "group": "postgres@1"
         },
         {
-          "command": "vscode-postgres.editFunction",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.function",
+          "command": "vscode-foresight-devtool.editFunction",
+          "when": "view == postgres && viewItem == vscode-foresight-devtool.tree.function",
           "group": "postgres@2"
         },
         {
-          "command": "vscode-postgres.editView",
-          "when": "view == postgres && viewItem == vscode-postgres.tree.view",
+          "command": "vscode-foresight-devtool.editView",
+          "when": "view == postgres && viewItem == vscode-foresight-devtool.tree.view",
           "group": "postgres@2"
         }
       ]
@@ -323,7 +314,7 @@
         {
           "id": "postgres",
           "name": "PostgreSQL",
-          "when": "config.vscode-postgres.showExplorer == true"
+          "when": "config.vscode-foresight-devtool.showExplorer == true"
         }
       ]
     }

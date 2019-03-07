@@ -6,7 +6,7 @@ export default abstract class BaseCommand {
 
   constructor(context: vscode.ExtensionContext) {
     let commandName = this.constructor.name.replace(/Command$/, '');
-    let disposable = vscode.commands.registerCommand('vscode-postgres.' + commandName, this.run, this);
+    let disposable = vscode.commands.registerCommand('vscode-foresight-devtool.' + commandName, this.run, this);
     context.subscriptions.push(disposable);
   }
   

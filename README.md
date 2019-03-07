@@ -72,11 +72,11 @@ You can choose from three formats: json, xml, and csv.  The results will be conv
 
 This extension contributes the following settings:
 
-* `vscode-postgres.showExplorer`: enable/disable the database explorer.
-* `vscode-postgres.prettyPrintJSONfields`: set to `true` to enable nicely formatted JSON in the query results window.
-* `vscode-postgres.setConnectionFromExplorer`: set to `ifunset` to only set the query connection if not already set.
-* `vscode-postgres.tableColumnSortOrder`: set to `db-order` to sort columns like the database does, `alpha` to sort alphabetically, and `reverse-alpha` for descending alphabetically.
-* `vscode-postgres.intervalFormat`: set to `iso_8601` to format intervals according to the ISO 8601 standard, `humanize` to format as easy to read text, and `succinct` to format like a countdown clock.
-* `vscode-postgres.virtualFolders`: set to array of virtual folders to be displayed under schema. Supported values for virtual folders are `functions`. Set to `null` or empty array `[]` to disable virtual folders.
-* `vscode-postgres.defaultConnection`: set the default connection (by name) that should be used for any file.
-* `vscode-postgres.defaultDatabase`: set the default database on the default connection that should be used for any file (must exist on server).
+* `vscode-foresight-devtool.showExplorer`: enable/disable the database explorer.
+* `vscode-foresight-devtool.prettyPrintJSONfields`: set to `true` to enable nicely formatted JSON in the query results window.
+* `vscode-foresight-devtool.setConnectionFromExplorer`: set to `ifunset` to only set the query connection if not already set.
+* `vscode-foresight-devtool.tableColumnSortOrder`: set to `db-order` to sort columns like the database does, `alpha` to sort alphabetically, and `reverse-alpha` for descending alphabetically.
+* `vscode-foresight-devtool.intervalFormat`: set to `iso_8601` to format intervals according to the ISO 8601 standard, `humanize` to format as easy to read text, and `succinct` to format like a countdown clock.
+* `vscode-foresight-devtool.virtualFolders`: set to array of virtual folders to be displayed under schema. Supported values for virtual folders are `functions`. Set to `null` or empty array `[]` to disable virtual folders.
+* `vscode-foresight-devtool.defaultConnection`: set the default connection (by name) that should be used for any file.
+* `vscode-foresight-devtool.defaultDatabase`: set the default database on the default connection that should be used for any file (must exist on server).
