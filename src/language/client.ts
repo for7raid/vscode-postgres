@@ -24,8 +24,8 @@ export default class PostgreSQLLanguageClient {
         { language: 'postgres', scheme: 'untitled' },
         { language: 'sql', scheme: 'file' },
         { language: 'sql', scheme: 'untitled' },
-        { language: 'sql', scheme: 'postgres-database' },
-        { language: 'postgres', scheme: 'postgres-database' },
+        { language: 'sql', scheme: 'postgres-function' },
+        { language: 'postgres', scheme: 'postgres-function' },
       ]
     };
 

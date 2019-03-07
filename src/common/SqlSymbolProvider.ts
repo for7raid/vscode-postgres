@@ -20,7 +20,7 @@ export class SqlSymbolProvider implements vscode.WorkspaceSymbolProvider {
             
 
             var symbols = res.rows.map<vscode.SymbolInformation>(func => {
-                var file = func.schema == 'public' ? `postgres-database:/${root}\\SQL\\F\\${func.name}.sql` : `postgres-database:/${root}\\SQL\\${func.schema}\\F\\${func.name}.sql`;
+                var file = func.schema == 'public' ? `postgres-function:/${root}\\SQL\\F\\${func.name}.sql` : `postgres-function:/${root}\\SQL\\${func.schema}\\F\\${func.name}.sql`;
                 return {
                     name: func.name + ".sql",
                     kind: vscode.SymbolKind.File,

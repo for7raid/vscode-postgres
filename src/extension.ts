@@ -13,12 +13,13 @@ import { ResultsManager } from './resultsview/resultsManager';
 import { SqlSymbolProvider } from './common/SqlSymbolProvider';
 import { DatabaseFS } from './common/databaseFileSystem';
 import PsqlDocumentFormattingEditProvider from './formatter/PsqlDocumentFormattingEditProvider';
+import FunctionDefinitionProvider from './common/FunctionDefinitionProvider';
 
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
-  
+
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
   console.log('Congratulations, your extension "vscode-postgres" is now active!');
@@ -50,10 +51,12 @@ export async function activate(context: vscode.ExtensionContext) {
     await EditorState.setNonActiveConnection(e, null);
   });
 
-  context.subscriptions.push(vscode.workspace.registerFileSystemProvider('postgres-config', new ConfigFS(), {isCaseSensitive: true}));
-  context.subscriptions.push(vscode.workspace.registerFileSystemProvider('postgres-database', new DatabaseFS(), {isCaseSensitive: false}));
-  context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider([{ language: 'sql' },{ language: 'postgres' }], new PsqlDocumentFormattingEditProvider()));
+  context.subscriptions.push(vscode.workspace.registerFileSystemProvider('postgres-config', new ConfigFS(), { isCaseSensitive: true }));
+  context.subscriptions.push(vscode.workspace.registerFileSystemProvider('postgres-function', new DatabaseFS(), { isCaseSensitive: false }));
+  //context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider([{ language: 'sql' }, { language: 'postgres' }], new PsqlDocumentFormattingEditProvider()));
   context.subscriptions.push(vscode.languages.registerWorkspaceSymbolProvider(new SqlSymbolProvider()));
+  context.subscriptions.push(vscode.languages.registerDefinitionProvider([{ language: 'sql' }, { language: 'postgres' }, { language: 'html' }], new FunctionDefinitionProvider()));
+
 
 }
 

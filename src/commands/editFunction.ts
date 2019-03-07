@@ -13,8 +13,9 @@ export class editFunctionCommand extends BaseCommand {
     let projectConnection = await EditorState.getDefaultConnection();
     if (treeNode.connection.label == Constants.ProejctConnectionLabel || (projectConnection !== null && treeNode.connection.host == projectConnection.host && treeNode.connection.database == projectConnection.database)) {
       var root = vscode.workspace.rootPath;
-      var file = 'postgres-database:/' + (treeNode.schema == 'public' ? `${root}\\SQL\\F\\${treeNode.func}.sql` : `${root}\\SQL\\${treeNode.schema}\\F\\${treeNode.func}.sql`);
+      var file = 'postgres-function:/' + (treeNode.schema == 'public' ? `${root}\\SQL\\F\\${treeNode.func}.sql` : `${root}\\SQL\\${treeNode.schema}\\F\\${treeNode.func}.sql`);
       const textDocument = await vscode.workspace.openTextDocument(vscode.Uri.parse(file));
+      await vscode.window.showTextDocument(textDocument);
     }
     else {
       const connection = await Database.createConnection(treeNode.connection);
