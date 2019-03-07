@@ -21,6 +21,8 @@ export default class FunctionDefinitionProvider implements vscode.DefinitionProv
 				return new vscode.Location(vscode.Uri.parse(file), new vscode.Range(0, 0, 0, 0));
 			})
 
+			await connection.end();
+			
 			resolve(symbols);
 		});
 

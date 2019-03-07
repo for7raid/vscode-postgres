@@ -28,6 +28,9 @@ export class SqlSymbolProvider implements vscode.WorkspaceSymbolProvider {
                     containerName: "Database functions"
                 }
             })
+
+            await connection.end();
+
             resolve(symbols);
         });
     }

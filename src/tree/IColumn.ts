@@ -11,4 +11,5 @@ export interface IColumn {
   data_type: string;
   primary_key: boolean;
   foreign_key?: IForeignKey;
+  attnotnull: boolean;
 }

@@ -24,6 +24,7 @@ export class editFunctionCommand extends BaseCommand {
       const sql = res.rows[0].pg_get_functiondef;
       const textDocument = await vscode.workspace.openTextDocument({ content: sql, language: 'postgres' });
       await vscode.window.showTextDocument(textDocument);
+      await connection.end();
 
     }
     EditorState.connection = treeNode.connection;

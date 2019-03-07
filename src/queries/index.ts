@@ -74,7 +74,7 @@ ORDER BY name;`,
     ORDER BY 1, 2, 4;`,
     TableColumns:
       `SELECT
-        a.attname as column_name,
+        a.attname as column_name, a.attnotnull,
         format_type(a.atttypid, a.atttypmod) as data_type,
         coalesce(primaryIndex.indisprimary, false) as primary_key,
         (
@@ -137,14 +137,14 @@ ORDER BY name;`,
                     LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
                     LEFT JOIN pg_catalog.pg_description d ON p.oid = d.objoid
                     left join pg_language l on l.oid = p.prolang
-                WHERE p.prosrc ilike $1 and lower(p.proname) <> lower($1)
+                WHERE p.prosrc ilike $1 and lower(p.proname) <> trim(lower($1))
                   AND p.prorettype <> 'pg_catalog.trigger'::pg_catalog.regtype
                   AND has_schema_privilege(quote_ident(n.nspname), 'USAGE') = true
                   AND has_function_privilege(p.oid, 'execute') = true
                   and l.lanname in ('sql', 'plpgsql')
                  
                 ORDER BY 1, 2, 4;`,
-    FindFunction:  `SELECT n.nspname as "schema",
+    FindFunction: `SELECT n.nspname as "schema",
     p.proname as "name",
     pg_catalog.pg_get_function_result(p.oid) as "result_type",
     pg_catalog.pg_get_function_arguments(p.oid) as "argument_types",
