@@ -20,7 +20,7 @@ export class editFunctionCommand extends BaseCommand {
     else {
       const connection = await Database.createConnection(treeNode.connection);
       let query = SqlQueryManager.getVersionQueries(connection.pg_version);
-      const res = await connection.query(query.GetFunctionSoruce, [treeNode.func]);
+      const res = await connection.query(query.GetFunctionSoruce, [treeNode.schema, treeNode.func]);
       const sql = res.rows[0].pg_get_functiondef;
       const textDocument = await vscode.workspace.openTextDocument({ content: sql, language: 'postgres' });
       await vscode.window.showTextDocument(textDocument);

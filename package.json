@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/for7raid/vscode-foresight-devtool.git"
+    "url": "https://github.com/for7raid/vscode-postgres.git"
   },
   "engines": {
     "vscode": "^1.25.0"

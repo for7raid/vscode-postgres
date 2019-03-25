@@ -69,7 +69,7 @@ export class DatabaseFS implements vscode.FileSystemProvider {
     const projectConnection = await EditorState.getDefaultConnection();
     const connection = await Database.createConnection(projectConnection);
     const query = SqlQueryManager.getVersionQueries(connection.pg_version);
-    const res = await connection.query(query.GetFunctionSoruce, [statFile.name]);
+    const res = await connection.query(query.GetFunctionSoruce, [statFile.scheme, statFile.name]);
     const sql = res.rows[0].pg_get_functiondef;
     await connection.end();
     if (!sql || sql.length === 0)

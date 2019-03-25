@@ -118,10 +118,10 @@ ORDER BY name;`,
       ORDER BY {0};`,
     GetFunctionSoruce: `SELECT
       pg_get_functiondef((
-              SELECT
-                  oid FROM pg_proc
-              WHERE
-                  proname = $1));`,
+        select p.oid from pg_proc p
+        LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
+        WHERE
+                  proname = $2 and n.nspname = $1));`,
     GetFunctionDepends: `SELECT n.nspname as "schema",
                   p.proname as "name",
                   pg_catalog.pg_get_function_result(p.oid) as "result_type",
