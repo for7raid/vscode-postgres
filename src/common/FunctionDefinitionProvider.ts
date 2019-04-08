@@ -6,7 +6,7 @@ import { SqlQueryManager } from '../queries';
 export default class FunctionDefinitionProvider implements vscode.DefinitionProvider {
 	provideDefinition(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): vscode.ProviderResult<vscode.Definition> {
 		return new Promise(async (resolve, reject) => {
-			const find = document.getText(document.getWordRangeAtPosition(position));
+			const find = document.getText(document.getWordRangeAtPosition(position, /[a-zA-z._0-9]+/));
 			let projectConnection = await EditorState.getDefaultConnection();
 			const connection = await Database.createConnection(projectConnection);
 			let query = SqlQueryManager.getVersionQueries(connection.pg_version);

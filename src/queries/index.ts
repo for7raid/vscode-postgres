@@ -159,7 +159,7 @@ ORDER BY name;`,
       LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
       LEFT JOIN pg_catalog.pg_description d ON p.oid = d.objoid
       left join pg_language l on l.oid = p.prolang
-  WHERE p.proname ilike  $1
+  WHERE n.nspname || '.' || p.proname ilike  $1
     AND p.prorettype <> 'pg_catalog.trigger'::pg_catalog.regtype
     AND has_schema_privilege(quote_ident(n.nspname), 'USAGE') = true
     AND has_function_privilege(p.oid, 'execute') = true

@@ -55,7 +55,7 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(vscode.workspace.registerFileSystemProvider('postgres-function', new DatabaseFS(), { isCaseSensitive: false }));
   //context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider([{ language: 'sql' }, { language: 'postgres' }], new PsqlDocumentFormattingEditProvider()));
   context.subscriptions.push(vscode.languages.registerWorkspaceSymbolProvider(new SqlSymbolProvider()));
-  context.subscriptions.push(vscode.languages.registerDefinitionProvider([{ language: 'sql' }, { language: 'postgres' }, { language: 'html' }], new FunctionDefinitionProvider()));
+  context.subscriptions.push(vscode.languages.registerDefinitionProvider([{ language: 'sql' }, { language: 'postgres' }, { language: 'html' }, { language: 'json' }], new FunctionDefinitionProvider()));
 
 
 }

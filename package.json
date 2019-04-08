@@ -1,8 +1,8 @@
 {
   "name": "vscode-pmforesight",
   "displayName": "Foresight dev tool",
-  "description": "Foresight dev tool",
-  "version": "0.0.1",
+  "description": "Разработка решений на базе продукта ПМ Форсайт©. ЗАО Проектная Практика",
+  "version": "0.0.3",
   "publisher": "akarov",
   "license": "MIT",
   "repository": {

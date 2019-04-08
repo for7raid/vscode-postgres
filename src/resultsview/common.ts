@@ -36,15 +36,7 @@ export function generateResultsHtml(sourceUri: vscode.Uri, results: QueryResult[
 }
 
 function getStyles(nonce) {
-  let config = Global.Configuration;
-  let prettyJsonFieldStyle = '';
-  if (config.get<boolean>('prettyPrintJSONfields')) {
-    prettyJsonFieldStyle = `
-    .jsonb-field, .json-field {
-      white-space: pre;
-    }
-    `;
-  }
+ 
   return `<style nonce="${nonce}">
     body {
       margin: 0;
@@ -91,7 +83,9 @@ function getStyles(nonce) {
       font-size: smaller;
     }
 
-    ${prettyJsonFieldStyle}
+    .jsonb-field, .json-field {
+      white-space: pre;
+    }
     
     table {
       border-collapse: collapse;
@@ -241,8 +235,8 @@ function formatFieldValue(field: FieldInfo, value: any): string {
   }
   let formatted = htmlEntities(value);
   if (canTruncate) {
-    if (formatted && formatted.length > 150)
-      formatted = formatted.substring(0, 148) + '&hellip;';
+    if (formatted && formatted.length > 2000)
+      formatted = formatted.substring(0, 1998) + '&hellip;';
   }
   return formatted;
 }
