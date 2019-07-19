@@ -92,6 +92,10 @@
         "command": "vscode-foresight-devtool.runQuery",
         "key": "f5",
         "when": "editorLangId == postgres"
+      },
+      {
+        "command": "vscode-foresight-devtool.newQuery",
+        "key": "alt+q"
       }
     ],
     "commands": [

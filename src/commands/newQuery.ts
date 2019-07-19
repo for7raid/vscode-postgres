@@ -12,5 +12,7 @@ export class newQueryCommand extends BaseCommand {
     await vscode.window.showTextDocument(textDocument);
     if (treeNode && treeNode.connection)
       EditorState.connection = treeNode.connection;
+    else
+      EditorState.connection =  await EditorState.getDefaultConnection();
   }
 }
